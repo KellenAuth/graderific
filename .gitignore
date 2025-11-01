@@ -1,0 +1,57 @@
+# Django uploads and database
+uploads/*
+db.sqlite3
+*.pyc
+autotester
+*~
+
+# Sensitive files
+DOMAIN.md
+*.pem
+*.key
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Django stuff
+*.log
+local_settings.py
+
+# Static files (if collected)
+staticfiles/
+media/
+
+# Backup files
+*.bak
+*.backup
