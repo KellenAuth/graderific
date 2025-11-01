@@ -1,0 +1,56 @@
+{% include "header.html" with title="Submissions Page" %}
+
+<main>
+  <h1>{{ assignment.title }}</h1>
+  <p>All grades out of {{ assignment.points }}</p>
+
+  <form action="/{{ assignment.id }}/submissions/" method="post">
+    {% csrf_token %}
+    
+    {% if general_errors %}
+      {% for error in general_errors %}
+        <output class="general-error">{{ error }}</output>
+      {% endfor %}
+    {% endif %}
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Submission</th>
+          <th>Grade</th>
+          <th>Errors</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for submission in submissions %}
+        <tr>
+          <td>{{ submission.author.get_full_name }}</td>
+          <td><a href="{{ submission.file.url }}" title="View submission from student {{ submission.author.username }}">Submission</a></td>
+          <td>
+            <label for="grade-{{ submission.author.username }}" class="sr-only">Grade for student {{ submission.author.username }}</label>
+            <input type="number" 
+                   min="0" 
+                   max="{{ assignment.points }}" 
+                   step="0.01"
+                   id="grade-{{ submission.author.username }}" 
+                   name="grade-{{ submission.id }}" 
+                   value="{{ submission.score|default_if_none:'' }}"
+                   required>
+          </td>
+          <td>
+            {% if submission.error_messages %}
+              {% for error in submission.error_messages %}
+                <output>{{ error }}</output>
+              {% endfor %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit">Submit</button>
+    <a href="/{{ assignment.id }}/">Back to assignment</a>
+  </form>
+</main>

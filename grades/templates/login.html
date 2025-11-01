@@ -1,0 +1,23 @@
+{% include "header.html" with title="Login Page" %}
+
+<main>
+  <h1>Log in</h1>
+  
+  {% if error %}
+  <output style="color: red; font-weight: bold;">{{ error }}</output>
+  {% endif %}
+  
+  <form class="login-form" method="POST" action="/profile/login/">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <p>
+      <label for="username">Username:</label>
+      <input id="username" name="username" autofocus>
+    </p>
+    <p>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+    </p>
+    <button type="submit">Log in</button>
+  </form>
+</main>

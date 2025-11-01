@@ -1,0 +1,45 @@
+{% include "header.html" with title="Profile Page" %}
+
+<main>
+  <h1>Your grades</h1>
+  <section>
+    <p>Currently logged in as {{ user.get_full_name }}. <a href="/profile/logout/" role="button">Log out</a></p>
+  </section>
+
+  <table class="sortable profile-grades">
+    <thead>
+      <tr>
+        <th>Assignment</th>
+        <th class="number sort-column">
+          {% if is_student %}
+            Status
+          {% else %}
+            Graded
+          {% endif %}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assignment in assignments %}
+      <tr data-index="{{ forloop.counter }}" data-weight="{{ assignment.weight }}">
+        <td><a href="/{{ assignment.id }}/">{{ assignment.title }}</a></td>
+        <td class="number" data-value="{% if is_student %}{{ assignment.status|floatformat:0|default:0 }}{% else %}{{ assignment.graded_count|floatformat:0|default:0 }}{% endif %}">
+          {% if is_student %}
+            {{ assignment.status }}
+          {% else %}
+            {{ assignment.graded_count }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    {% if is_student and current_grade %}
+    <tfoot>
+      <tr>
+        <td><strong>Final grade</strong></td>
+        <td class="number"><strong>{{ current_grade.percentage }}%</strong></td>
+      </tr>
+    </tfoot>
+    {% endif %}
+  </table>
+</main>

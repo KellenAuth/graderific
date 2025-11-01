@@ -1,0 +1,44 @@
+{% include "header.html" with title="Assignments Page" %}
+
+<main>
+  <h1>{{ assignment.title }}</h1>
+  <p>Due {{ assignment.deadline|date:"F d" }}, total of {{ assignment.points }} point{{ assignment.points|pluralize }}</p>
+
+  <section aria-label="submission status">
+    {% if is_ta or is_admin %}
+      <!-- TA/Admin view -->
+      <p>Currently {{ total_submissions }}/{{ total_students }} submission{{ total_students|pluralize }}</p>
+      <p>
+        {{ your_submissions }} submission{{ your_submissions|pluralize }} assigned to you
+        {% if your_submissions > 0 %}
+          <a href="/{{ assignment.id }}/submissions/" title="Grade your assigned submission">Grade</a>
+        {% endif %}
+      </p>
+    {% else %}
+      <!-- Student view -->
+      <div class="action-card">
+        <h2>Student Actions</h2>
+        <p>{{ submission_status }}</p>
+        
+        {% if True %}  <!-- Changed from "if not past_due" to always show the form -->
+        <form action="/{{ assignment.id }}/" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if file_error %}
+          <output style="color: red; font-weight: bold;">{{ file_error }}</output>
+          {% endif %}
+          <p>
+            <label for="submission_file">Upload submission:</label>
+            <input type="file" id="submission_file" name="submission_file" accept="application/pdf">
+          </p>
+          <button type="submit">Submit Assignment</button>
+        </form>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
+
+  <section>
+    <h2>Description</h2>
+    {{ assignment.description|safe }}
+  </section>
+</main>

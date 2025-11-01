@@ -1,0 +1,23 @@
+{% include "header.html" with title="Index Page" %}
+
+<main>
+  <h1>All assignments</h1>
+  <table class="sortable">
+    <thead>
+      <tr>
+        <th>Assignment</th>
+        <th class="sort-column">Due date</th>
+        <th class="number sort-column">Weight</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assignment in assignments %}
+      <tr data-index="{{ forloop.counter }}">
+        <td><a href="/{{ assignment.id }}/">{{ assignment.title }}</a></td>
+        <td data-value="{{ assignment.deadline|date:"U" }}">{{ assignment.deadline|date:"M d" }}</td>
+        <td class="number" data-value="{{ assignment.weight }}">{{ assignment.weight }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
